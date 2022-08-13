@@ -17,22 +17,22 @@ def mainPage(request):
     if request.method == 'POST':
         form = CityForm(request.POST)
         if form.is_valid():
-            if requests.get(url.format(form.name)):
-                form.save()
+            form.save()
             return redirect('home')
 
     weather_data = []
 
     for city in cities:
-        city_weather = requests.get(url.format(city)).json()
+        if requests.get(url.format(city)):
+            city_weather = requests.get(url.format(city)).json()
 
-        weather = {
-            'city': city,
-            'temperature': ceil((city_weather['main']['temp']-32) * 5/9),
-            'description': city_weather['weather'][0]['description'],
-            'icon': city_weather['weather'][0]['icon'],
-        }
-        weather_data.append(weather)
+            weather = {
+                'city': city,
+                'temperature': ceil((city_weather['main']['temp']-32) * 5/9),
+                'description': city_weather['weather'][0]['description'],
+                'icon': city_weather['weather'][0]['icon'],
+            }
+            weather_data.append(weather)
 
     context = {'weather_data': weather_data, 'form': form}
     return render(request, 'main.html', context)
