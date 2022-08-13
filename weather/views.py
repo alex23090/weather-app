@@ -7,8 +7,7 @@ import os
 
 
 def mainPage(request):
-    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid='
-    url += f"{os.environ.get('WEATHER_API_KEY')}"
+    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid=c3994ea9cb6a6b70c4001b8c6713dc0a'
 
     cities = City.objects.all()
 
@@ -23,16 +22,19 @@ def mainPage(request):
     weather_data = []
 
     for city in cities:
-        if requests.get(url.format(city)):
-            city_weather = requests.get(url.format(city)).json()
+        city_weather = requests.get(url.format(city)).json()
 
+        if 'message' not in city_weather:
             weather = {
                 'city': city,
-                'temperature': ceil((city_weather['main']['temp']-32) * 5/9),
+                'temperature': ceil((city_weather['main']['temp'] - 32) * 5 / 9),
                 'description': city_weather['weather'][0]['description'],
                 'icon': city_weather['weather'][0]['icon'],
+                'country': city_weather['sys']['country'],
             }
             weather_data.append(weather)
+        else:
+            city.delete()
 
     context = {'weather_data': weather_data, 'form': form}
     return render(request, 'main.html', context)
