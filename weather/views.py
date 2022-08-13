@@ -36,6 +36,8 @@ def mainPage(request):
         else:
             city.delete()
 
+    weather_data.reverse()
+
     context = {'weather_data': weather_data, 'form': form}
     return render(request, 'main.html', context)
 
