@@ -17,7 +17,8 @@ def mainPage(request):
     if request.method == 'POST':
         form = CityForm(request.POST)
         if form.is_valid():
-            form.save()
+            if requests.get(url.format(form)):
+                form.save()
             return redirect('home')
 
     weather_data = []
