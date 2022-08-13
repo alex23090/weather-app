@@ -7,7 +7,8 @@ import os
 
 
 def mainPage(request):
-    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid=c3994ea9cb6a6b70c4001b8c6713dc0a'
+    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid='
+    url += f"{os.environ.get('WEATHER_API_KEY')}"
 
     cities = City.objects.all()
 
