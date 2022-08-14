@@ -9,3 +9,6 @@ class CityForm(ModelForm):
         widgets = {
             'name': TextInput(attrs={'class': 'input', 'placeholder': 'City Name', 'name': 'city'})
         }
+
+    def clean_name(self):
+        return self.cleaned_data['name'].capitalize()
