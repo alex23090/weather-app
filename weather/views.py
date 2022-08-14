@@ -17,10 +17,20 @@ def mainPage(request):
     if request.method == 'POST':
         form = CityForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('home')
+            try:
+                city = City.objects.get(name=form.cleaned_data.get('name'))
+                city.delete()
+            except:
+                print("No such city in the database!")
+            city_weather = requests.get(url.format(form.cleaned_data.get('name'))).json()
+            if 'message' not in city_weather:
+                form.save()
+                if len(cities) > 10:
+                    cities[0].delete()
+                return redirect('home')
 
     weather_data = []
+
 
     for city in cities:
         city_weather = requests.get(url.format(city)).json()
