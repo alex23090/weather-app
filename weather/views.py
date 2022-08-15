@@ -23,6 +23,7 @@ def mainPage(request):
             except:
                 print("No such city in the database!")
             city_weather = requests.get(url.format(form.cleaned_data.get('name'))).json()
+            print(city_weather)
             if 'message' not in city_weather:
                 form.save()
                 if len(cities) > 10:
@@ -60,3 +61,20 @@ def deleteWeather(request, name):
         return redirect('home')
     context = {'city': city}
     return render(request, 'delete_form.html', context)
+
+
+def fullForecast(request, name):
+    city = City.objects.get(name=name)
+    url = f"http://api.openweathermap.org/data/2.5/forecast?q={city.name}&appid={os.environ.get('WEATHER_API_KEY')}&units=metric"
+    forecast = requests.get(url).json()
+    day, time = forecast['list'][0]['dt_txt'].split()
+    today = []
+    for d in forecast['list']:
+        if day in d['dt_txt']:
+            today.append(d)
+        else:
+            break
+    print(today)
+    parts = forecast['list']
+    context = {'parts': today, 'city': forecast['city']['name'], 'country': forecast['city']['country'], 'day': day}
+    return render(request, 'full_forecast.html', context)

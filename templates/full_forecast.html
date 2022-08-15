@@ -1,0 +1,39 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+    <h1 style="font-size: 32px;">{{ city }} {{ country }}</h1>
+    <h2 style="font-size: 23px;">{{ day }}</h2>
+
+    <div style="display: flex; justify-content: space-evenly;">
+
+        {% for part in parts %}
+            <div class="box">
+                <article class="media">
+                    <div class="media-left">
+                        <figure class="image is-50x50">
+                            <img src="http://openweathermap.org/img/w/{{ part.weather.0.icon }}.png" alt="Image">
+                        </figure>
+                    </div>
+                    <div class="media-content">
+                        <div class="content">
+                            <p>
+                                <span class="title">{{ part.dt_txt|slice:"11:19" }}</span>
+                                <br>
+                                <span class="subtitle">{{ part.main.temp }} C&#176;</span>
+                                <br> {{ part.weather.0.description }}
+                                <br> Feels like - {{ part.main.feels_like }} C&#176
+                                <br>Pressure - {{ part.main.pressure }}mm
+                                <br> Humidity - {{ part.main.humidity }}%
+                                <br> Wind speed - {{ part.wind.speed }}m/s
+                                <br> Cloudiness - {{ part.clouds.all }}%
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

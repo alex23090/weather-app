@@ -9,7 +9,6 @@
 </head>
 <body style="text-align: center;">
 
-    {% block content %}
     <section class="hero is-primary" style="background-color: #6EBDFF;">
         <div class="hero-body">
             <div class="container">
@@ -19,6 +18,8 @@
             </div>
         </div>
     </section>
+
+    {% block content %}
     <section class="section">
         <div class="container">
             <div class="columns">
@@ -53,7 +54,7 @@
                                 <div class="media-content">
                                     <div class="content">
                                         <p>
-                                            <span class="title">{{ weather.city }}, {{ weather.country }}</span>
+                                            <span class="title"><a href="{% url 'full-forecast'  weather.city %}">{{ weather.city }}, {{ weather.country }}</a></span>
                                             <br>
                                             <span class="subtitle">{{ weather.temperature }} C&#176;</span>
                                             <br> {{ weather.description }}
