@@ -5,7 +5,7 @@
     <h1 style="font-size: 32px;">{{ city }} {{ country }}</h1>
     <h2 style="font-size: 23px;">{{ day }}</h2>
 
-    <div style="display: flex; justify-content: space-evenly;">
+    <div style="display: flex; justify-content: space-evenly;" class="flex-item">
 
         {% for part in parts %}
             <div class="box">
@@ -36,4 +36,11 @@
 
     </div>
 
+    <style>
+        @media (max-width:670px) {
+            .flex-item {
+            flex-direction: column;
+        }
+    }
+    </style>
 {% endblock %}
